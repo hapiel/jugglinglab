@@ -1,3 +1,7 @@
+This fork is being used to try out various changes to juggling lab in order to allow body throws (like backcrosses) and body contact (like foot catches).
+
+For more information, see danielsimu.nl/research/
+
 # Juggling Lab juggling animator
 
 Juggling Lab is an open-source application for creating and animating juggling patterns. Its main goals are to help people learn juggling patterns, and to assist with inventing new ones.
