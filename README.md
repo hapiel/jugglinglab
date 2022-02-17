@@ -1,6 +1,6 @@
 This fork is being used to try out various changes to juggling lab in order to allow body throws (like backcrosses) and body contact (like foot catches).
 
-For more information, see danielsimu.nl/research/
+For more information, see [danielsimu.nl/research/](https://danielsimu.nl/research/)
 
 # Juggling Lab juggling animator
 
