@@ -3,3 +3,4 @@ admin/
 build/
 packages/
 source/resources/package/windows/*.properties
+stuff/

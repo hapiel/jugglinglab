@@ -1,6 +1,6 @@
-*.jar
+# *.jar
 *.app
 *.dmg
 *.exe
 Juggling Lab/
-ortools-lib/
+# ortools-lib/
