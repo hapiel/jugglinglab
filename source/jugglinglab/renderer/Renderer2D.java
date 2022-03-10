@@ -364,24 +364,26 @@ public class Renderer2D extends Renderer {
             // the lines for each arm, starting with the left:
             for (int j = 0; j < 2; j++) {
                 if (jugglervec[i - 1][4 + j] == null) {
+                    // if the elbow is undefined
                     obj[index].type = DrawObject2D.TYPE_LINE;
                     obj[index].number = i;
-                    getXYZ(jugglervec[i - 1][2+j], obj[index].coord[0]);  // entire arm
-                    getXYZ(jugglervec[i - 1][0+j], obj[index].coord[1]);
-                    int x = Math.min((int)Math.round(obj[index].coord[0].x),
+                    getXYZ(jugglervec[i - 1][2+j], obj[index].coord[0]);  // shoulder 
+                    getXYZ(jugglervec[i - 1][0+j], obj[index].coord[1]);  // hand
+                    int x = Math.min((int)Math.round(obj[index].coord[0].x), // get min(shoulderX, handX)
                                      (int)Math.round(obj[index].coord[1].x));
-                    int y = Math.min((int)Math.round(obj[index].coord[0].y),
+                    int y = Math.min((int)Math.round(obj[index].coord[0].y), // get min(shoulderY, handY)
                                      (int)Math.round(obj[index].coord[1].y));
-                    int width = Math.abs((int)Math.round(obj[index].coord[0].x)
+                    int width = Math.abs((int)Math.round(obj[index].coord[0].x) // get dX(shoulder, hand)
                                          - (int)Math.round(obj[index].coord[1].x)) + 1;
-                    int height = Math.abs((int)Math.round(obj[index].coord[0].y)
+                    int height = Math.abs((int)Math.round(obj[index].coord[0].y) // get dY(shoulder, hand)
                                           - (int)Math.round(obj[index].coord[1].y)) + 1;
-                    obj[index].boundingbox.x = x;
+                    obj[index].boundingbox.x = x; // create boundingbox containing the arm
                     obj[index].boundingbox.y = y;
                     obj[index].boundingbox.width = width;
                     obj[index].boundingbox.height = height;
                     index++;
                 } else {
+                    // note: elbow should always be defined
                     obj[index].type = DrawObject2D.TYPE_LINE;
                     obj[index].number = i;
                     getXYZ(jugglervec[i - 1][2+j], obj[index].coord[0]);  // upper arm

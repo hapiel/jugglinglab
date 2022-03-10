@@ -103,8 +103,8 @@ public class Juggler {
                 coord2.z + shoulder_h + neck_h + head_h,
                 coord2.y + head_hw * s + shoulder_y * c);
 
-            double L = lower_total;
-            double U = upper_total;
+            double L = lower_total; // length of the lower arm
+            double U = upper_total; // length of the upper arm
             JLVector deltaL = JLVector.sub(lefthand, leftshoulder);
             double D = deltaL.length();
             if (D <= (L+U)) {
@@ -126,7 +126,11 @@ public class Juggler {
                         leftshoulder.y + Lxsc.y - Lr*Math.cos(Lalpha),
                         leftshoulder.z + Lxsc.z * factor);
             } else {
-                leftelbow = null;
+                // if the distance between hand and shoulder is unrealistically far, the elbow is halfway between them
+                leftelbow = new JLVector(
+                    (leftshoulder.x + lefthand.x) / 2,
+                    (leftshoulder.y + lefthand.y) / 2,
+                    (leftshoulder.z + lefthand.z) / 2);
             }
 
             JLVector deltaR = JLVector.sub(righthand, rightshoulder);
@@ -150,7 +154,11 @@ public class Juggler {
                         rightshoulder.y + Rxsc.y - Rr*Math.cos(Ralpha),
                         rightshoulder.z + Rxsc.z * factor);
             } else {
-                rightelbow = null;
+                // if the distance between hand and shoulder is unrealistically far, the elbow is halfway between them
+                rightelbow = new JLVector(
+                    (rightshoulder.x + righthand.x) / 2,
+                    (rightshoulder.y + righthand.y) / 2,
+                    (rightshoulder.z + righthand.z) / 2);
             }
 
             result[juggler - 1][0] = lefthand;
