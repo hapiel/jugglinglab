@@ -1,6 +1,1 @@
-# *.jar
-*.app
-*.dmg
-*.exe
-Juggling Lab/
-# ortools-lib/
+/jugglinglab/
