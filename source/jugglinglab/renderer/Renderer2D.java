@@ -87,7 +87,7 @@ public class Renderer2D extends Renderer {
         for (int i = 0; i < maxobjects; i++)
             obj[i] = new DrawObject2D(maxobjects);
         obj2 = new DrawObject2D[maxobjects];
-        jugglervec = new JLVector[pat.getNumberOfJugglers()][12];
+        jugglervec = new JLVector[pat.getNumberOfJugglers()][18];
     }
 
     @Override
@@ -383,11 +383,12 @@ public class Renderer2D extends Renderer {
                     obj[index].boundingbox.height = height;
                     index++;
                 } else {
-                    // note: elbow should always be defined
+                    // note: elbow should always be defined, so we're always in this else
                     obj[index].type = DrawObject2D.TYPE_LINE;
                     obj[index].number = i;
-                    getXYZ(jugglervec[i - 1][2+j], obj[index].coord[0]);  // upper arm
-                    getXYZ(jugglervec[i - 1][4+j], obj[index].coord[1]);
+                    obj[index].id = "upper";
+                    getXYZ(jugglervec[i - 1][2+j], obj[index].coord[0]);               // shoulder
+                    getXYZ(jugglervec[i - 1][4+j], obj[index].coord[1]);               // elbow
                     int x = Math.min((int)Math.round(obj[index].coord[0].x),
                                      (int)Math.round(obj[index].coord[1].x));
                     int y = Math.min((int)Math.round(obj[index].coord[0].y),
@@ -404,8 +405,8 @@ public class Renderer2D extends Renderer {
 
                     obj[index].type = DrawObject2D.TYPE_LINE;
                     obj[index].number = i;
-                    getXYZ(jugglervec[i - 1][4 + j], obj[index].coord[0]);  // lower arm
-                    getXYZ(jugglervec[i - 1][0 + j], obj[index].coord[1]);
+                    getXYZ(jugglervec[i - 1][4 + j], obj[index].coord[0]);  // elbow
+                    getXYZ(jugglervec[i - 1][0 + j], obj[index].coord[1]);  // hand
                     x = Math.min((int)Math.round(obj[index].coord[0].x),
                                  (int)Math.round(obj[index].coord[1].x));
                     y = Math.min((int)Math.round(obj[index].coord[0].y),
@@ -420,6 +421,46 @@ public class Renderer2D extends Renderer {
                     obj[index].boundingbox.height = height;
                     index++;
                 }
+            }
+
+            // legs
+            for(int j = 0; j < 2; j++) {
+                obj[index].type = DrawObject2D.TYPE_LINE;
+                obj[index].number = i;
+                obj[index].id = "upper";
+                getXYZ(jugglervec[i - 1][16+j], obj[index].coord[0]);               // hip
+                getXYZ(jugglervec[i - 1][14+j], obj[index].coord[1]);               // knee
+                int x = Math.min((int)Math.round(obj[index].coord[0].x),
+                                 (int)Math.round(obj[index].coord[1].x));
+                int y = Math.min((int)Math.round(obj[index].coord[0].y),
+                                 (int)Math.round(obj[index].coord[1].y));
+                int width = Math.abs((int)Math.round(obj[index].coord[0].x)
+                                     - (int)Math.round(obj[index].coord[1].x)) + 1;
+                int height = Math.abs((int)Math.round(obj[index].coord[0].y)
+                                      - (int)Math.round(obj[index].coord[1].y)) + 1;
+                obj[index].boundingbox.x = x;
+                obj[index].boundingbox.y = y;
+                obj[index].boundingbox.width = width;
+                obj[index].boundingbox.height = height;
+                index++;
+
+                obj[index].type = DrawObject2D.TYPE_LINE;
+                obj[index].number = i;
+                getXYZ(jugglervec[i - 1][14 + j], obj[index].coord[0]);  // knee
+                getXYZ(jugglervec[i - 1][12 + j], obj[index].coord[1]);  // foot
+                x = Math.min((int)Math.round(obj[index].coord[0].x),
+                             (int)Math.round(obj[index].coord[1].x));
+                y = Math.min((int)Math.round(obj[index].coord[0].y),
+                             (int)Math.round(obj[index].coord[1].y));
+                width = Math.abs((int)Math.round(obj[index].coord[0].x)
+                                 - (int)Math.round(obj[index].coord[1].x)) + 1;
+                height = Math.abs((int)Math.round(obj[index].coord[0].y)
+                                  - (int)Math.round(obj[index].coord[1].y)) + 1;
+                obj[index].boundingbox.x = x;
+                obj[index].boundingbox.y = y;
+                obj[index].boundingbox.width = width;
+                obj[index].boundingbox.height = height;
+                index++;
             }
         }
         numobjects = index;
@@ -547,7 +588,8 @@ public class Renderer2D extends Renderer {
                     }
                     break;
                 case DrawObject2D.TYPE_LINE:
-                     g.setColor(Color.black);
+                    g.setColor(Color.black);
+                    if (ob.id == "upper") g.setColor(Color.red);
                     int x1 = (int)Math.round(ob.coord[0].x);
                     int y1 = (int)Math.round(ob.coord[0].y);
                     int x2 = (int)Math.round(ob.coord[1].x);
@@ -616,6 +658,7 @@ public class Renderer2D extends Renderer {
         public ArrayList<DrawObject2D> covering;
         public boolean drawn;
         public JLVector tempv;
+        public String id; // to be removed
 
 
         public DrawObject2D(int numobjects) {
