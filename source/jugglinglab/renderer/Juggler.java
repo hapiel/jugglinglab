@@ -30,9 +30,8 @@ public class Juggler {
     public final static double upper_arm_length = 41.0;
     public final static double lower_arm_length = 40.0;
 
-    public final static double upper_leg_length = 41.0;
+    public final static double upper_leg_length = 40.0;
     public final static double lower_leg_length = 40.0;
-    public final static double leg_total = 81.0;
 
     public final static double lower_gap_wrist = 1.0;
     public final static double lower_gap_elbow = 0.0;
@@ -167,6 +166,67 @@ public class Juggler {
                     (rightshoulder.z + righthand.z) / 2);
             }
 
+            // LEGS
+            // static feet for now 
+            leftfoot = new JLVector(
+                leftwaist.x,
+                leftwaist.y - upper_leg_length - lower_leg_length,
+                leftwaist.z);
+            rightfoot = new JLVector(
+                rightwaist.x,
+                rightwaist.y - upper_leg_length - lower_leg_length + 20,
+                rightwaist.z);
+            righthip = new JLVector(
+                rightwaist.x - 3,
+                rightwaist.y,
+                rightwaist.z);
+            lefthip = new JLVector(
+                leftwaist.x + 3,
+                leftwaist.y,
+                leftwaist.z);
+
+            // calculate legs
+            L = lower_leg_length; // length of the lower leg
+            U = upper_leg_length; // length of the upper leg
+            deltaL = JLVector.sub(leftfoot, lefthip);
+            D = deltaL.length();
+            if (D <= (L+U)) {
+                // this doesn't yet account for the juggler themself being non-vertical!
+                // step 1. calculate the angle between the upper leg in the z direction and the juggler using cosine law
+                double angleLeg = Math.acos((U*U + D*D - L*L) / (2*U*D));
+
+                // step 2. apply the SOHCAHTOA rule.
+                leftknee = new JLVector(
+                    (lefthip.x + leftfoot.x) / 2,
+                    lefthip.y - U * Math.cos(angleLeg),
+                    lefthip.z + U * Math.sin(angleLeg));
+            } else {
+                // if the distance between foot and hip is farther than the leg length, the knee is halfway between them
+                leftknee = new JLVector(
+                    (lefthip.x + leftfoot.x) / 2,
+                    (lefthip.y + leftfoot.y) / 2,
+                    (lefthip.z + leftfoot.z) / 2);
+            }
+
+            deltaR = JLVector.sub(rightfoot, righthip);
+            D = deltaR.length();
+            if (D <= (L+U)) {
+                double angleLeg = Math.acos((U*U + D*D - L*L) / (2*U*D));
+
+                // step 2. apply the SOHCAHTOA rule.
+                rightknee = new JLVector(
+                    (righthip.x + rightfoot.x) / 2,
+                    righthip.y - U * Math.cos(angleLeg),
+                    righthip.z + U * Math.sin(angleLeg));
+            } else {
+                // if the distance between foot and hip is unrealistically far, the knee is halfway between them
+                rightknee = new JLVector(
+                    (righthip.x + rightfoot.x) / 2,
+                    (righthip.y + rightfoot.y) / 2,
+                    (righthip.z + rightfoot.z) / 2);
+            }
+
+
             result[juggler - 1][0] = lefthand;
             result[juggler - 1][1] = righthand;
             result[juggler - 1][2] = leftshoulder;
@@ -180,33 +240,6 @@ public class Juggler {
             result[juggler - 1][10] = rightheadbottom;
             result[juggler - 1][11] = rightheadtop;
             
-            // temporary legs
-            righthip = new JLVector(
-                rightwaist.x - 3,
-                rightwaist.y,
-                rightwaist.z);
-            lefthip = new JLVector(
-                leftwaist.x + 2,
-                leftwaist.y,
-                leftwaist.z);
-            leftknee = new JLVector(
-                lefthip.x,
-                lefthip.y - upper_leg_length,
-                lefthip.z + 2);
-            rightknee = new JLVector(
-                righthip.x,
-                righthip.y - upper_leg_length,
-                righthip.z + 2);
-            leftfoot = new JLVector(
-                lefthip.x,
-                lefthip.y - upper_leg_length - lower_leg_length,
-                lefthip.z);
-            rightfoot = new JLVector(
-                righthip.x,
-                righthip.y - upper_leg_length - lower_leg_length,
-                righthip.z);
-            
-                
             result[juggler - 1][12] = leftfoot;
             result[juggler - 1][13] = rightfoot;
             result[juggler - 1][14] = leftknee;
