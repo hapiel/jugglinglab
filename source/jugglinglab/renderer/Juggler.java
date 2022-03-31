@@ -13,9 +13,9 @@ import jugglinglab.jml.HandLink;
 
 public class Juggler {
         // juggler dimensions, in centimeters
-    public final static double shoulder_hw = 23.0;  // shoulder half-width (cm)
+    public final static double shoulder_hw = 22.0;  // shoulder half-width (cm)
     public final static double shoulder_h = 50.0;  // throw pos. to shoulder
-    public final static double waist_hw = 17.0;  // waist half-width
+    public final static double waist_hw = 16.0;  // waist half-width
     public final static double waist_h = -5.0;
     public final static double elbow_hw = 30.0;  // elbow "home"
     public final static double elbow_h = 6.0;
@@ -30,8 +30,9 @@ public class Juggler {
     public final static double upper_arm_length = 41.0;
     public final static double lower_arm_length = 40.0;
 
-    public final static double upper_leg_length = 40.0;
-    public final static double lower_leg_length = 40.0;
+    public final static double upper_leg_length = 38.0;
+    public final static double lower_leg_length = 38.0;
+    public final static double leg_width = 2.5; // side position compared to hips
 
     public final static double lower_gap_wrist = 1.0;
     public final static double lower_gap_elbow = 0.0;
@@ -169,19 +170,19 @@ public class Juggler {
             // LEGS
             // static feet for now 
             leftfoot = new JLVector(
-                leftwaist.x,
+                leftwaist.x - leg_width,
                 leftwaist.y - upper_leg_length - lower_leg_length,
                 leftwaist.z);
             rightfoot = new JLVector(
-                rightwaist.x,
+                rightwaist.x + leg_width,
                 rightwaist.y - upper_leg_length - lower_leg_length + 20,
                 rightwaist.z);
             righthip = new JLVector(
-                rightwaist.x - 3,
+                rightwaist.x ,
                 rightwaist.y,
                 rightwaist.z);
             lefthip = new JLVector(
-                leftwaist.x + 3,
+                leftwaist.x ,
                 leftwaist.y,
                 leftwaist.z);
 

@@ -74,9 +74,13 @@ public class Animator {
             return;
 
         ren1 = new Renderer2D();
+        
+        ren1.setRenderLegs(jc.legs);
+        
         ren1.setPattern(pat);
         if (jc.stereo) {
             ren2 = new Renderer2D();
+            ren2.setRenderLegs(jc.legs);
             ren2.setPattern(pat);
         } else
             ren2 = null;
