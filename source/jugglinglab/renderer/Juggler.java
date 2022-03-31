@@ -14,7 +14,7 @@ import jugglinglab.jml.HandLink;
 public class Juggler {
         // juggler dimensions, in centimeters
     public final static double shoulder_hw = 23.0;  // shoulder half-width (cm)
-    public final static double shoulder_h = 40.0;  // throw pos. to shoulder
+    public final static double shoulder_h = 50.0;  // throw pos. to shoulder
     public final static double waist_hw = 17.0;  // waist half-width
     public final static double waist_h = -5.0;
     public final static double elbow_hw = 30.0;  // elbow "home"
@@ -27,8 +27,11 @@ public class Juggler {
     public final static double neck_h = 5.0;  // neck height
     public final static double shoulder_y = 0.0;
     public final static double pattern_y = 30.0;
-    public final static double upper_length = 41.0;
-    public final static double lower_length = 40.0;
+    public final static double upper_arm_length = 41.0;
+    public final static double lower_arm_length = 40.0;
+
+    public final static double upper_leg_length = 40.0;
+    public final static double lower_leg_length = 40.0;
 
     public final static double lower_gap_wrist = 1.0;
     public final static double lower_gap_elbow = 0.0;
@@ -36,8 +39,8 @@ public class Juggler {
     public final static double upper_gap_elbow = 0.0;
     public final static double upper_gap_shoulder = 0.0;
 
-    protected final static double lower_total = lower_length + lower_gap_wrist + lower_gap_elbow;
-    protected final static double upper_total = upper_length + upper_gap_elbow + upper_gap_shoulder;
+    protected final static double lower_arm_total = lower_arm_length + lower_gap_wrist + lower_gap_elbow;
+    protected final static double upper_arm_total = upper_arm_length + upper_gap_elbow + upper_gap_shoulder;
 
         // the remaining are used only for the 3d display
     public final static double shoulder_radius = 6;
@@ -54,6 +57,8 @@ public class Juggler {
             JLVector leftwaist, rightwaist;
             JLVector leftheadbottom, leftheadtop;
             JLVector rightheadbottom, rightheadtop;
+            //legs
+            JLVector leftfoot, rightfoot, leftknee, rightknee, lefthip, righthip;
 
             Coordinate coord0 = new Coordinate();
             Coordinate coord1 = new Coordinate();
@@ -103,8 +108,8 @@ public class Juggler {
                 coord2.z + shoulder_h + neck_h + head_h,
                 coord2.y + head_hw * s + shoulder_y * c);
 
-            double L = lower_total;
-            double U = upper_total;
+            double L = lower_arm_total; // length of the lower arm
+            double U = upper_arm_total; // length of the upper arm
             JLVector deltaL = JLVector.sub(lefthand, leftshoulder);
             double D = deltaL.length();
             if (D <= (L+U)) {
@@ -126,7 +131,11 @@ public class Juggler {
                         leftshoulder.y + Lxsc.y - Lr*Math.cos(Lalpha),
                         leftshoulder.z + Lxsc.z * factor);
             } else {
-                leftelbow = null;
+                // if the distance between hand and shoulder is unrealistically far, the elbow is halfway between them
+                leftelbow = new JLVector(
+                    (leftshoulder.x + lefthand.x) / 2,
+                    (leftshoulder.y + lefthand.y) / 2,
+                    (leftshoulder.z + lefthand.z) / 2);
             }
 
             JLVector deltaR = JLVector.sub(righthand, rightshoulder);
@@ -150,8 +159,73 @@ public class Juggler {
                         rightshoulder.y + Rxsc.y - Rr*Math.cos(Ralpha),
                         rightshoulder.z + Rxsc.z * factor);
             } else {
-                rightelbow = null;
+                // if the distance between hand and shoulder is unrealistically far, the elbow is halfway between them
+                rightelbow = new JLVector(
+                    (rightshoulder.x + righthand.x) / 2,
+                    (rightshoulder.y + righthand.y) / 2,
+                    (rightshoulder.z + righthand.z) / 2);
             }
+
+            // LEGS
+            // static feet for now 
+            leftfoot = new JLVector(
+                leftwaist.x,
+                leftwaist.y - upper_leg_length - lower_leg_length,
+                leftwaist.z);
+            rightfoot = new JLVector(
+                rightwaist.x,
+                rightwaist.y - upper_leg_length - lower_leg_length + 20,
+                rightwaist.z);
+            righthip = new JLVector(
+                rightwaist.x - 3,
+                rightwaist.y,
+                rightwaist.z);
+            lefthip = new JLVector(
+                leftwaist.x + 3,
+                leftwaist.y,
+                leftwaist.z);
+
+            // calculate legs
+            L = lower_leg_length; // length of the lower leg
+            U = upper_leg_length; // length of the upper leg
+            deltaL = JLVector.sub(leftfoot, lefthip);
+            D = deltaL.length();
+            if (D <= (L+U)) {
+                // this doesn't yet account for the juggler themself being non-vertical!
+                // step 1. calculate the angle between the upper leg in the z direction and the juggler using cosine law
+                double angleLeg = Math.acos((U*U + D*D - L*L) / (2*U*D));
+
+                // step 2. apply the SOHCAHTOA rule.
+                leftknee = new JLVector(
+                    (lefthip.x + leftfoot.x) / 2,
+                    lefthip.y - U * Math.cos(angleLeg),
+                    lefthip.z + U * Math.sin(angleLeg));
+            } else {
+                // if the distance between foot and hip is farther than the leg length, the knee is halfway between them
+                leftknee = new JLVector(
+                    (lefthip.x + leftfoot.x) / 2,
+                    (lefthip.y + leftfoot.y) / 2,
+                    (lefthip.z + leftfoot.z) / 2);
+            }
+
+            deltaR = JLVector.sub(rightfoot, righthip);
+            D = deltaR.length();
+            if (D <= (L+U)) {
+                double angleLeg = Math.acos((U*U + D*D - L*L) / (2*U*D));
+
+                // step 2. apply the SOHCAHTOA rule.
+                rightknee = new JLVector(
+                    (righthip.x + rightfoot.x) / 2,
+                    righthip.y - U * Math.cos(angleLeg),
+                    righthip.z + U * Math.sin(angleLeg));
+            } else {
+                // if the distance between foot and hip is unrealistically far, the knee is halfway between them
+                rightknee = new JLVector(
+                    (righthip.x + rightfoot.x) / 2,
+                    (righthip.y + rightfoot.y) / 2,
+                    (righthip.z + rightfoot.z) / 2);
+            }
+
 
             result[juggler - 1][0] = lefthand;
             result[juggler - 1][1] = righthand;
@@ -165,6 +239,13 @@ public class Juggler {
             result[juggler - 1][9] = leftheadtop;
             result[juggler - 1][10] = rightheadbottom;
             result[juggler - 1][11] = rightheadtop;
+            
+            result[juggler - 1][12] = leftfoot;
+            result[juggler - 1][13] = rightfoot;
+            result[juggler - 1][14] = leftknee;
+            result[juggler - 1][15] = rightknee;
+            result[juggler - 1][16] = lefthip;
+            result[juggler - 1][17] = righthip;
         }
     }
 
