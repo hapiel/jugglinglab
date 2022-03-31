@@ -1,0 +1,6 @@
+righthand lefthand
+rightfoot leftfoot
+rightelbow leftelbow
+rightknee leftknee
+rightshoulder leftshoulder
+head
