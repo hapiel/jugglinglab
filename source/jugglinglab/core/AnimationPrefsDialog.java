@@ -33,9 +33,11 @@ public class AnimationPrefsDialog extends JDialog {
     protected JCheckBox cb_stereo;
     protected JCheckBox cb_catchsounds;
     protected JCheckBox cb_bouncesounds;
+    protected JCheckBox cb_legs;
     protected JTextField tf_other;
     protected JButton but_cancel;
     protected JButton but_ok;
+    
 
     protected boolean ok_selected;
 
@@ -76,6 +78,8 @@ public class AnimationPrefsDialog extends JDialog {
         cb_stereo.setSelected(oldjc.stereo);
         cb_catchsounds.setSelected(oldjc.catchSound);
         cb_bouncesounds.setSelected(oldjc.bounceSound);
+        cb_legs.setSelected(oldjc.legs);
+        
 
         try {
             // filter out all the explicit settings above to populate the
@@ -190,7 +194,8 @@ public class AnimationPrefsDialog extends JDialog {
         cb_stereo = new JCheckBox(guistrings.getString("Stereo_display"));
         cb_catchsounds = new JCheckBox(guistrings.getString("Catch_sounds"));
         cb_bouncesounds = new JCheckBox(guistrings.getString("Bounce_sounds"));
-
+        cb_legs = new JCheckBox(guistrings.getString("Draw_legs"));
+        
         // manual settings
         JLabel lab_other = new JLabel("Manual settings");
         tf_other = new JTextField(15);
@@ -228,16 +233,21 @@ public class AnimationPrefsDialog extends JDialog {
                                                 new Insets(0,border,0,border)));
         getContentPane().add(cb_bouncesounds);
         gb.setConstraints(cb_bouncesounds, make_constraints(GridBagConstraints.LINE_START,0,5,
+                                                new Insets(0,border,0,border)));
+        getContentPane().add(cb_legs);
+        gb.setConstraints(cb_legs, make_constraints(GridBagConstraints.LINE_START,0,6,
                                                 new Insets(0,border,8,border)));
+        
+        
         getContentPane().add(lab_other);
-        gb.setConstraints(lab_other, make_constraints(GridBagConstraints.LINE_START,0,6,
+        gb.setConstraints(lab_other, make_constraints(GridBagConstraints.LINE_START,0,7,
                                                 new Insets(0,border,0,border)));
         getContentPane().add(tf_other);
-        gb.setConstraints(tf_other, make_constraints(GridBagConstraints.LINE_START,0,7,
+        gb.setConstraints(tf_other, make_constraints(GridBagConstraints.LINE_START,0,8,
                                                 new Insets(0,border,3,border)));
 
         getContentPane().add(p2);
-        gb.setConstraints(p2, make_constraints(GridBagConstraints.LINE_END,0,8,
+        gb.setConstraints(p2, make_constraints(GridBagConstraints.LINE_END,0,9,
                                                new Insets(0,border,border,border)));
 
         getRootPane().setDefaultButton(but_ok);  // OK button is default
@@ -324,6 +334,7 @@ public class AnimationPrefsDialog extends JDialog {
         newjc.stereo = cb_stereo.isSelected();
         newjc.catchSound = cb_catchsounds.isSelected();
         newjc.bounceSound = cb_bouncesounds.isSelected();
+        newjc.legs = cb_legs.isSelected();
 
         if (tf_other.getText().trim().length() > 0) {
             try {

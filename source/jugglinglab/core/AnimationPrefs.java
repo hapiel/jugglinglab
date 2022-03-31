@@ -33,6 +33,7 @@ public class AnimationPrefs {
     public static final boolean startPause_def = false;
     public static final boolean mousePause_def = false;
     public static final boolean catchSound_def = false;
+    public static final boolean legs_def = true;
     public static final boolean bounceSound_def;
     public static final int view_def = View.VIEW_NONE;
 
@@ -73,6 +74,7 @@ public class AnimationPrefs {
     public double[] camangle;  // in degrees! null means use default
     public int view = view_def;  // one of the values in View
     public int[] hideJugglers;
+	public boolean legs = legs_def;
 
 
     public AnimationPrefs() {

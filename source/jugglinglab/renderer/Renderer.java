@@ -28,6 +28,8 @@ public abstract class Renderer {
     public abstract void setCameraAngle(double[] angle);
 
     public abstract double[] getCameraAngle();
+    
+    public abstract void setRenderLegs(boolean render);
 
     // the following two methods return results in local coordinates
     public abstract Coordinate getHandWindowMax();
