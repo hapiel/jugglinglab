@@ -32,7 +32,7 @@ public class Juggler {
 
     public final static double upper_leg_length = 38.0;
     public final static double lower_leg_length = 38.0;
-    public final static double leg_width = 3; // side position compared to hips
+    public final static double leg_width = 2.5; // side position compared to hips
 
     public final static double lower_gap_wrist = 1.0;
     public final static double lower_gap_elbow = 0.0;

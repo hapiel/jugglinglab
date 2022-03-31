@@ -110,7 +110,7 @@ public class Renderer2D extends Renderer {
         Coordinate adjusted_max = new Coordinate(overallmax);
         Coordinate adjusted_min = new Coordinate(overallmin);
 
-        final boolean ORIGINAL_ZOOM = true;
+        final boolean ORIGINAL_ZOOM = false;
 
         if (ORIGINAL_ZOOM) {
             // This is the zoom algorithm that has been in Juggling Lab for many
@@ -140,6 +140,8 @@ public class Renderer2D extends Renderer {
 
             // make the x-coordinate origin at the center of the view
             double maxabsx = Math.max(Math.abs(adjusted_min.x), Math.abs(adjusted_max.x));
+            
+            
             adjusted_min.x = -maxabsx;
             adjusted_max.x = maxabsx;
 
@@ -631,6 +633,11 @@ public class Renderer2D extends Renderer {
 
     @Override
     public Coordinate getHandWindowMin() {
+    	
+    	if (renderLegs) {
+    		return new Coordinate(-(Juggler.upper_leg_length * 1.5),0,-1);
+    	}
+    	
         return new Coordinate(-Juggler.hand_in, 0, -1);
     }
 
