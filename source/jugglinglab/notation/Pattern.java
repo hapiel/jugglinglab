@@ -19,11 +19,12 @@ public abstract class Pattern {
     static final ResourceBundle errorstrings = jugglinglab.JugglingLab.errorstrings;
 
     // The built-in notations
-    public static final String[] builtinNotations = { "Siteswap" };
+    public static final String[] builtinNotations = { "Siteswap", "dNote" };
 
     // these should be in the same order as in the builtinNotations array
     public static final int NOTATION_NONE = 0;
     public static final int NOTATION_SITESWAP = 1;
+    public static final int NOTATION_DNOTE = 2;
 
     // creates a new blank pattern in the given notation
     public static Pattern newPattern(String notation) throws JuggleExceptionUser,
@@ -33,6 +34,9 @@ public abstract class Pattern {
 
         if (notation.equalsIgnoreCase("siteswap"))
             return new SiteswapPattern();
+        
+        if (notation.equalsIgnoreCase("dNote"))
+            return new DNotePattern();
 
         throw new JuggleExceptionUser("Notation type '"+notation+"' not recognized");
     }

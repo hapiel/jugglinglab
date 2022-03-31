@@ -39,7 +39,7 @@ public class ApplicationWindow extends JFrame implements ActionListener {
                             JuggleExceptionUser, JuggleExceptionInternal {
         super(title);
         createMenus();
-        createContents();
+        createContents(Pattern.NOTATION_SITESWAP);
 
         Point center = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
         int locx = Math.max(0, center.x - Constants.RESERVED_WIDTH_PIXELS / 2);
@@ -80,14 +80,14 @@ public class ApplicationWindow extends JFrame implements ActionListener {
     // Create window contents
     //-------------------------------------------------------------------------
 
-    protected void createContents() throws
+    protected void createContents(int notation) throws
                         JuggleExceptionUser, JuggleExceptionInternal {
         ApplicationPanel ap = new ApplicationPanel(this);
         ap.setDoubleBuffered(true);
         setContentPane(ap);  // entire contents of window
 
         // does the real work of adding controls etc.
-        ap.setNotation(Pattern.NOTATION_SITESWAP);
+        ap.setNotation(notation);
 
         Locale loc = JLLocale.getLocale();
         applyComponentOrientation(ComponentOrientation.getOrientation(loc));
@@ -95,6 +95,7 @@ public class ApplicationWindow extends JFrame implements ActionListener {
         setBackground(new Color(0.9f, 0.9f, 0.9f));
         pack();
     }
+    
 
     //-------------------------------------------------------------------------
     // Static methods
@@ -594,6 +595,10 @@ public class ApplicationWindow extends JFrame implements ActionListener {
                 doMenuCommand(MenuCommand.HELP_ABOUT);
             else if (command.equals("online"))
                 doMenuCommand(MenuCommand.HELP_ONLINE);
+            else if (command.equals("notation1"))
+                doMenuCommand(MenuCommand.NOTATION_SITESWAP);
+            else if (command.equals("notation2"))
+                doMenuCommand(MenuCommand.NOTATION_DNOTE);
         } catch (JuggleExceptionInternal jei) {
             ErrorDialog.handleFatalException(jei);
         }
@@ -607,6 +612,8 @@ public class ApplicationWindow extends JFrame implements ActionListener {
         FILE_EXIT,
         HELP_ABOUT,
         HELP_ONLINE,
+        NOTATION_SITESWAP,
+        NOTATION_DNOTE
     }
 
     protected void doMenuCommand(MenuCommand action) throws JuggleExceptionInternal {
@@ -644,6 +651,22 @@ public class ApplicationWindow extends JFrame implements ActionListener {
 
             case HELP_ONLINE:
                 ApplicationWindow.showOnlineHelp();
+                break;
+                
+            case NOTATION_SITESWAP:
+            	try {
+            		createContents(Pattern.NOTATION_SITESWAP);
+            	} catch (Exception ex) {
+            		new ErrorDialog(null, "Exception thrown: "+ ex);
+            	}
+                break;
+
+            case NOTATION_DNOTE:
+            	try {
+            		createContents(Pattern.NOTATION_DNOTE);
+            	} catch (Exception ex) {
+            		new ErrorDialog(null, "Exception thrown: "+ ex);
+            	}
                 break;
         }
     }

@@ -94,6 +94,9 @@ public class ApplicationPanel extends JPanel implements ActionListener {
             case Pattern.NOTATION_SITESWAP:
                 addPatternEntryControl(new SiteswapNotationControl());
                 break;
+            case Pattern.NOTATION_DNOTE:
+                addPatternEntryControl(new DNoteNotationControl());
+                break;
         }
 
         PatternListPanel pl = patlist;
