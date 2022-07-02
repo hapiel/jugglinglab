@@ -21,7 +21,7 @@ Once you understand a bit of siteswap it is a lot of fun to plug in various sequ
 
 [Rhythmic Catches](../rhythmic_catches/) and [IMBO](../improved_body_trick_notation/) have been designed with trick generation and simulation mind. Together with Ilse Arwert I attempted to modify Juggling Lab to make it suitable for these notation systems.
 
-# Why? (DANIEL)
+# Why?
 
 What are the possible motivations to generate or simulate tricks?
 
@@ -43,10 +43,27 @@ Inspired by these various motivations, and excited to see the true power of Rhyt
 
 We chose to do this by modifying the open source software [Juggling Lab](https://jugglinglab.org/), for which we had full support and encouragement of its creator Jack Boyce.
 
-## Original goals (see proposal) (DANIEL)
-legs, throw and catch with body parts, extending JML
+## Why modify Juggling Lab?
 
-## Why juggling lab instead of JoePass! (Daniel)
+When we considered to build our own simulator, we had the option to either start from scratch or build upon existing software. To save time we chose to edit existing software, and for this we considered two options.
+
+Juggling lab is open source software written in Java. It has been developed [since at least 1997](http://juggling.org/programs/java/JuggleAnim/ja.html) (then called JuggleAnim) and is still being [updated regularly](https://github.com/jkboyce/jugglinglab). It has many different features, for example the ability to control hand positions which is useful if we wanted to simulate body throws.
+
+The other option was JoePass!, which is open source software written in C++. However, it features less intuitive options to move the limbs of the jugglers, and also I was simply less familiar with it. For this reason, we chose to work with Juggling Lab.
+
+As a bonus, I was already in touch with Jack Boyce, who encouraged us to make changes to the software.
+
+## Original goals 
+
+It would have been nice if we could simulate all of Rhythmic Catches and IMBO, but this was a larger task than we imagined to be possible for ourselves within the limited time we wanted to spend on this project.
+
+Therefor we set out the following targets:
+
+- Adding legs to the juggler in Juggling Lab
+- Allowing balls to be tossed and caught from any position on the body
+- Extending the internal xml language called JML to be able to access these new features.
+
+This would allow me to later write a new interface that could translate Rhythmic Catches and IMBO into extended JML and make it do what I wanted it to do.
 
 ## JML is it good? v4 challenges
 
@@ -56,4 +73,18 @@ legs, throw and catch with body parts, extending JML
 
 # recommendations of how one should build the simulator of the future
 
-# Appendix: List of simulation software??? (DANIEL)
+# Appendix: List of juggling software
+
+Here is a short list of interesting juggling software I came across whilst researching this project:
+
+- [Juggling Lab](https://jugglinglab.org/), 3D multi feature juggling simulator, pattern generator, pattern editor, especially useful for ball juggling.
+- [JoePass!](http://westerboer.net/w/?page_id=151), 3D multi feature juggling simulator, especially useful for passing.
+- [Passist](https://dev.passist.org/), passing siteswap generator, diagram generator and animator
+- [Prechacthis.org](http://www.prechacthis.org/), prechac pattern generator and editor
+- [Juggle Suggest 2](https://joshmermelstein.com/juggle-suggest2/), siteswap autocompletion and animation
+- [Polyrhythmic Fountain](https://joshmermelstein.com/polyrhythmic-fountain/), polyrhythmic juggling simulator
+- [Juggling Toolbox](https://www.jonglage.net/jugglingTB.html), Generators for various different notation systems
+- [Power Juggler](http://vcg.isti.cnr.it/~tarini/index.php?3?juggling.html), simulator for negative siteswaps/antimatter.
+- Realistic Juggling Simulator by Pedro Teodoro, juggling siteswaps with imperfect accuracy. I can't find an active link, but a copy can be found in the Juggling Toolbox.
+
+Of course this list is far far far from extensive, it's just some stuff that I find particularly interesting.
